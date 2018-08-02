@@ -19,8 +19,8 @@ namespace taqc2018
         [OneTimeSetUp]
         public void BeforeAllMethods()
         {
-            //driver = new ChromeDriver();
-            driver = new FirefoxDriver();
+            driver = new ChromeDriver();
+            //driver = new FirefoxDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
@@ -36,7 +36,7 @@ namespace taqc2018
             driver.Quit();
         }
 
-        [Test]
+        //[Test]
         public void TheATest()
         {
             //IWebDriver driver = new FirefoxDriver();
