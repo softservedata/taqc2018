@@ -11,6 +11,7 @@ using OpenQA.Selenium.Firefox;
 
 namespace taqc2018
 {
+    [TestFixture]
     public class SeleniumSecond
     {
         private IWebDriver driver;
@@ -18,8 +19,8 @@ namespace taqc2018
         [OneTimeSetUp]
         public void BeforeAllMethods()
         {
-            driver = new ChromeDriver();
-            //driver = new FirefoxDriver();
+            //driver = new ChromeDriver();
+            driver = new FirefoxDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
@@ -41,7 +42,7 @@ namespace taqc2018
             driver.Navigate().GoToUrl("http://regres.herokuapp.com/logout");
         }
 
-        [Test]
+        //[Test]
         public void LoginTest1()
         {
             // Steps
@@ -72,7 +73,7 @@ namespace taqc2018
                 .GetAttribute("src").Contains("ukraine_logo2.gif"));
         }
 
-        [Test]
+        //[Test]
         public void LoginTest2()
         {
             // Steps
@@ -103,5 +104,46 @@ namespace taqc2018
                 .GetAttribute("src").Contains("ukraine_logo2.gif"));
         }
 
+        //[Test]
+        public void LoginTest3()
+        {
+            // Steps
+            //
+            //IWebElement login = driver.FindElement(By.Id("login"));
+            //login.Click();
+            //login.Clear();
+            //login.SendKeys("Hello");
+            //Thread.Sleep(1000); // For Presentation ONLY
+            //
+            // For Example, AJAX Refresh Element
+            //driver.Navigate().Refresh();
+            //
+            //login.Click();
+            //login.Clear();
+            //login.SendKeys("work");
+            //
+            driver.FindElement(By.Id("login")).Click();
+            driver.FindElement(By.Id("login")).Clear();
+            driver.FindElement(By.Id("login")).SendKeys("Hello");
+            Thread.Sleep(1000);
+            //
+            // For Example, AJAX Refresh Element
+            driver.Navigate().Refresh();
+            //
+            driver.FindElement(By.Id("login")).Click();
+            driver.FindElement(By.Id("login")).Clear();
+            driver.FindElement(By.Id("login")).SendKeys("work");
+            Thread.Sleep(1000); // For Presentation ONLY
+            //
+            driver.FindElement(By.Id("password")).Click();
+            driver.FindElement(By.Id("password")).Clear();
+            driver.FindElement(By.Id("password")).SendKeys("qwerty");
+            Thread.Sleep(1000); // For Presentation ONLY
+            //
+            //driver.FindElement(By.CssSelector(".btn.btn-primary")).Click();
+            //driver.FindElement(By.Id("password")).Submit();
+            Thread.Sleep(1000); // For Presentation ONLY
+            //
+        }
     }
 }

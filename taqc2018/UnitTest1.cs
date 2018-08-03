@@ -2,11 +2,13 @@
 using System.Windows;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace taqc2018
 {
     //[TestClass]
-    [TestFixture]
+    //[TestFixture]
     //[Parallelizable(ParallelScope.All)]
     public class UnitTest1
     {
@@ -25,14 +27,16 @@ namespace taqc2018
         public void BeforeAllMethods()
         {
             Console.WriteLine("[OneTimeSetUp] BeforeAllMethods()");
-            //MessageBox.Show("[OneTimeSetUp] BeforeAllMethods()", "info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show("[OneTimeSetUp] BeforeAllMethods()",
+            //    "info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         [OneTimeTearDown]
         public void AfterAllMethods()
         {
             Console.WriteLine("[OneTimeTearDown] AfterAllMethods()");
-            //MessageBox.Show("[OneTimeTearDown] AfterAllMethods()", "info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show("[OneTimeTearDown] AfterAllMethods()",
+            //    "info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         [SetUp]
@@ -78,6 +82,8 @@ namespace taqc2018
         //[Test, TestCaseSource(nameof(ConverterData))]
         public void TestMethod3(int x, char c)
         {
+            Console.WriteLine("ThreadID= " + Thread.CurrentThread.ManagedThreadId);
+            Console.WriteLine("x=" + x + " c=" + c);
             char expexted = c;
             char actual = (char)x;
             Assert.AreEqual(expexted, actual);
