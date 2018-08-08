@@ -79,17 +79,17 @@ namespace taqc2018
             //    driver.FindElement(By.CssSelector("a[name=\"selenium_ide\"] > p")).Text);
             //
             // Goto Position. Use Actions class
-            //Actions action = new Actions(driver);
-            //IWebElement position = driver.FindElement(By.CssSelector("a[name=\"selenium_ide\"] > p"));
-            //IWebElement position = driver.FindElement(By.XPath("//a[text()='2']"));
-            //action.MoveToElement(position).Perform();
-            //action.ClickAndHold().MoveToElement(position).Perform();
-            //
-            //  Goto Position By JavaScript.
-            IJavaScriptExecutor javaScript = (IJavaScriptExecutor)driver;
+            Actions action = new Actions(driver);
             //IWebElement position = driver.FindElement(By.CssSelector("a[name=\"selenium_ide\"] > p"));
             IWebElement position = driver.FindElement(By.XPath("//a[text()='2']"));
-            javaScript.ExecuteScript("arguments[0].scrollIntoView(true);", position);
+            action.MoveToElement(position).Perform();
+            //action.ClickAndHold().MoveToElement(position).Perform();
+            //
+            // Goto Position By JavaScript.
+            //IJavaScriptExecutor javaScript = (IJavaScriptExecutor)driver;
+            //IWebElement position = driver.FindElement(By.CssSelector("a[name=\"selenium_ide\"] > p"));
+            //IWebElement position = driver.FindElement(By.XPath("//a[text()='2']"));
+            //javaScript.ExecuteScript("arguments[0].scrollIntoView(true);", position);
             //
             Thread.Sleep(4000);
             //

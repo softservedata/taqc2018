@@ -11,7 +11,7 @@ using OpenQA.Selenium.Firefox;
 
 namespace taqc2018
 {
-    [TestFixture]
+    //[TestFixture]
     public class SeleniumSecond
     {
         private IWebDriver driver;

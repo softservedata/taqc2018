@@ -152,20 +152,6 @@ namespace taqc2018
         //[Test]
         public void Chrome1()
         {
-            ChromeOptions options = new ChromeOptions();
-            //options.AddArguments("--start-maximized");
-            //options.AddArguments("--no-proxy-server");
-            //options.AddArguments("--no-sandbox");
-            //options.AddArguments("--disable-web-security");
-            //options.AddArguments("--ignore-certificate-errors");
-            //options.AddArguments("--disable-extensions");
-            //options.AddArguments("--headless");
-            string homePath = Environment.GetEnvironmentVariable("HOMEPATH");
-            Console.WriteLine("homePath = " + homePath);
-            string userProfile = homePath + "\\AppData\\Local\\Google\\Chrome\\User Data";
-            //options.AddArguments("--user-data-dir=" + userProfile);
-            //options.BinaryLocation = @"C:\...\ChromiumPortable.exe";
-            //IWebDriver driver = new ChromeDriver(options);
             IWebDriver driver = new ChromeDriver();
             //
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -178,27 +164,87 @@ namespace taqc2018
 
         //[Test]
         public void Chrome2()
-        {
-            
-            IWebDriver driver = new ChromeDriver();
+        {   // Default Profile
+            ChromeOptions options = new ChromeOptions();
+            string homePath = Environment.GetEnvironmentVariable("HOMEPATH");
+            Console.WriteLine("homePath = " + homePath);
+            string userProfile = homePath + "\\AppData\\Local\\Google\\Chrome\\User Data";
+            //string userProfile = homePath + "\\AppData\\Local\\Google\\Chrome\\User Data\\Default"; // ERROR
+            Console.WriteLine("userProfile = " + userProfile);
+            options.AddArguments("--user-data-dir=" + userProfile);
+            IWebDriver driver = new ChromeDriver(options);
+            driver.Manage().Window.Maximize();
             //
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Navigate().GoToUrl("https://www.skype.com/en/");
+            driver.Navigate().GoToUrl("https://www.google.com.ua/");
             //
-            IWebElement blogsElement = driver.FindElement(By.PartialLinkText("Blogs"));
-            string blogsText = blogsElement.Text;
-            Console.WriteLine("blogsText=" + blogsText + "=end");
-            Thread.Sleep(2000);
+            driver.FindElement(By.Name("q")).SendKeys("Cheese");
+            Thread.Sleep(1000);
+            //driver.Quit();
+        }
+
+        //[Test]
+        public void Chrome3()
+        {   // Add Arguments
+            ChromeOptions options = new ChromeOptions();
+            options.AddArguments("--start-maximized");
+            options.AddArguments("--no-proxy-server");
+            //options.AddArguments("--no-sandbox");
+            //options.AddArguments("--disable-web-security");
+            options.AddArguments("--ignore-certificate-errors");
+            //options.AddArguments("--disable-extensions");
+            //options.AddArguments("--headless");
+            IWebDriver driver = new ChromeDriver(options);
+            //driver.Manage().Window.Maximize();
             //
-            Actions action = new Actions(driver);
-            action.ClickAndHold().MoveToElement(blogsElement).Build().Perform();
-            //action.MoveToElement(blogsElement).Build().Perform();
-            Thread.Sleep(4000);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Navigate().GoToUrl("https://www.google.com.ua/");
             //
-            string toolTipText = driver.FindElement(By.CssSelector("a[href='https://blogs.skype.com']")).Text;
-            Console.WriteLine("blogsElement=" + toolTipText + "=end");
+            driver.FindElement(By.Name("q")).SendKeys("Cheese");
             Thread.Sleep(1000);
             driver.Quit();
         }
+
+        //[Test]
+        public void Chrome4()
+        {   // Executable Location
+            ChromeOptions options = new ChromeOptions();
+            options.BinaryLocation = @"C:\Users\yharasym\Downloads\VideoTAQC\ChromiumPortable\ChromiumPortable.exe";
+            //options.BinaryLocation = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+            IWebDriver driver = new ChromeDriver(options);
+            //
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Navigate().GoToUrl("https://www.google.com.ua/");
+            //
+            driver.FindElement(By.Name("q")).SendKeys("Cheese");
+            Thread.Sleep(1000);
+            driver.Quit();
+        }
+
+        //[Test]
+        public void Chrome5()
+        {   // Headless
+            ChromeOptions options = new ChromeOptions();
+            options.AddArguments("--headless");
+            IWebDriver driver = new ChromeDriver(options);
+            //
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Navigate().GoToUrl("https://www.google.com.ua/");
+            //
+            Console.WriteLine("Title0= " + driver.Title);
+            driver.FindElement(By.Name("q")).SendKeys("Cheese" + Keys.Enter);
+            Console.WriteLine("Title1= " + driver.Title);
+            //driver.FindElement(By.Name("q")).SendKeys("Cheese");
+            //driver.FindElement(By.Name("q")).Submit();
+            //Thread.Sleep(2000);
+            //
+            ITakesScreenshot takesScreenshot = driver as ITakesScreenshot;
+            Screenshot screenshot = takesScreenshot.GetScreenshot();
+            screenshot.SaveAsFile("d:/ScreenshotGoogle1.png", ScreenshotImageFormat.Png);
+            //
+            Console.WriteLine("Title2= " + driver.Title);
+            driver.Quit();
+        }
+
     }
 }
