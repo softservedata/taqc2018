@@ -11,13 +11,16 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+//#pragma warning disable
 
 namespace taqc2018
 {
+
     [TestFixture]
     public class WaitTest
     {
         private static int count = 0;
+
         //[Test]
         public void Wait1Implicit()
         {
@@ -112,27 +115,106 @@ namespace taqc2018
         [Test]
         public void ExpectedConditions1()
         {
-            //IWebDriver driver = new ChromeDriver();
-            IWebDriver driver = new FirefoxDriver();
+            IWebDriver driver = new ChromeDriver();
+            //IWebDriver driver = new FirefoxDriver();
             //
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.Navigate().GoToUrl("https://datatables.net/examples/basic_init/alt_pagination.html");
+            //driver.Navigate().GoToUrl("https://datatables.net/examples/basic_init/alt_pagination.html");
+            driver.Navigate().GoToUrl("https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/paging/");
+            driver.Manage().Window.Maximize();
             //
             //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             //IWebElement tdLondonFirst = wait.Until((drv) => { return drv.FindElement(By.XPath("//td[text()='London']")); });
             //IWebElement tdLondonNameFirst = wait.Until((drv) => { return drv.FindElement(By.XPath("//td[text()='London']/preceding-sibling::td[2]")); });
-            IWebElement tdLondonFirst = driver.FindElement(By.XPath("//td[text()='London']"));
-            IWebElement tdLondonNameFirst = driver.FindElement(By.XPath("//td[text()='London']/preceding-sibling::td[2]"));
-            Console.WriteLine("tdLondonNameFirst= " + tdLondonNameFirst.Text);
+            //
+            //IWebElement tdLondonFirst = driver.FindElement(By.XPath("//td[text()='London']"));
+            //IWebElement tdLondonNameFirst = driver.FindElement(By.XPath("//td[text()='London']/preceding-sibling::td[2]"));
+            //Console.WriteLine("tdLondonNameFirst= " + tdLondonNameFirst.Text);
+            //
+            // Goto Position By JavaScript.
+            IJavaScriptExecutor javaScript = (IJavaScriptExecutor)driver;
+            IWebElement position = driver.FindElement(By.CssSelector("#using-paging-with-other-data-processing-plugins"));
+            javaScript.ExecuteScript("arguments[0].scrollIntoView(true);", position);
+            //
+            Thread.Sleep(2000);
+            // $x("//iframe[contains(@style,'height: 426px')]")
+            driver.SwitchTo().Frame(driver.FindElement(By.XPath("//iframe[contains(@style,'height: 426px')]")));
+            //driver.SwitchTo().Frame(driver.FindElement(By.XPath("//iframe[contains(@style,'height: 442px')]")));
+            //string temp = driver.FindElement(By.CssSelector("#grid-paging-remote-paging-demo")).Text;
+            //Console.WriteLine("temp= " + temp);
+            //
+            IWebElement tdNevadaFirst = driver.FindElement(By.XPath("//td[text()='Nevada']"));
+            IWebElement tdNevadaFirstData = driver.FindElement(By.XPath("//td[text()='Nevada']/preceding-sibling::td[2]"));
+            Console.WriteLine("tdNevadaFirstData1= " + tdNevadaFirstData.Text);
             //
             //wait.Until((drv) => { return drv.FindElement(By.XPath("//a[text()='3']")); }).Click();
             //tdLondonNameFirst = wait.Until((drv) => { return drv.FindElement(By.XPath("//td[text()='London']/preceding-sibling::td[2]")); });
-            driver.FindElement(By.LinkText("3")).Click();
-            tdLondonNameFirst = driver.FindElement(By.XPath("//td[text()='London']/preceding-sibling::td[2]"));
-            Console.WriteLine("tdLondonNameFirst= " + tdLondonNameFirst.Text);
-            //IWebElement searchElement = wait.Until<IWebElement>(ExpectedConditions.VisibilityOfElementLocated(By.Name("q")));
-            Thread.Sleep(1000);
+            //
+            //driver.FindElement(By.LinkText("3")).Click();
+            //tdLondonNameFirst = driver.FindElement(By.XPath("//td[text()='London']/preceding-sibling::td[2]"));
+            //Console.WriteLine("tdLondonNameFirst= " + tdLondonNameFirst.Text);
+            //
+            driver.FindElement(By.XPath("//span[text()='2']")).Click();
+            //
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            //wait.Until(ExpectedConditions.StalenessOf(tdNevadaFirstData));
+            //wait.Until(StalenessOf(tdNevadaFirst));
+            //wait.Until(InvisibilityOfElementLocated(By.XPath("//td[text()='2013/11/14']")));
+            wait.Until(InvisibilityOfElementLocated(By.XPath("//td[text()='" + tdNevadaFirstData.Text + "']")));
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            //
+            ////Thread.Sleep(4000); // For Presentation
+            //
+            tdNevadaFirstData = driver.FindElement(By.XPath("//td[text()='Nevada']/preceding-sibling::td[2]"));
+            Console.WriteLine("tdNevadaFirstData2= " + tdNevadaFirstData.Text);
+            //
+            //IWebElement searchElement = wait.Until<IWebElement>(ExpectedConditions.ElementExists(By.Name("q")));
+            Thread.Sleep(2000);
             driver.Quit();
         }
+
+        public static Func<IWebDriver, bool> StalenessOf(IWebElement element)
+        {
+            return (driver) =>
+            {
+                try
+                {
+                    Console.WriteLine("element == null || !element.Enabled || !element.Displayed " + (element == null || !element.Enabled || !element.Displayed));
+                    // Calling any method forces a staleness check
+                    return element == null || !element.Enabled || !element.Displayed;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return true;
+                }
+            };
+        }
+
+        public static Func<IWebDriver, bool> InvisibilityOfElementLocated(By locator)
+        {
+            return (driver) =>
+            {
+                try
+                {
+                    Console.WriteLine("InvisibilityOfElementLocated ...");
+                    var element = driver.FindElement(locator);
+                    return !element.Displayed;
+                }
+                catch (NoSuchElementException)
+                {
+                    // Returns true because the element is not present in DOM. The
+                    // try block checks if the element is present but is invisible.
+                    return true;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    // Returns true because stale element reference implies that element
+                    // is no longer visible.
+                    return true;
+                }
+            };
+        }
+
     }
 }

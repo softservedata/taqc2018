@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Threading;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
+
+namespace taqc2018.Pages
+{
+    public abstract class ATopComponent
+    {
+        protected IWebDriver driver;
+        //
+        public IWebElement TitleLabel { get; private set; }
+        //{ get { return driver.FindElement(By.XPath("//div[@id='header']/div/h3/..")); } }
+        public SelectElement ChangeLanguage { get; private set; }
+
+        protected ATopComponent(IWebDriver driver)
+        {
+            this.driver = driver;
+            //
+            TitleLabel = driver.FindElement(By.XPath("//div[@id='header']/div/h3/.."));
+            ChangeLanguage = new SelectElement(driver.FindElement(By.Id("changeLanguage")));
+        }
+
+        // PageObject Atomic
+
+        // TitleLabel
+        public string GetTitleLabelText()
+        {
+            return TitleLabel.Text;
+        }
+
+        public void ClickTitleLabel()
+        {
+            TitleLabel.Click();
+        }
+
+        // ChangeLanguage
+        public IWebElement GetChangeLanguageWebElement()
+        {
+            return ChangeLanguage.AllSelectedOptions[0];
+        }
+
+        public string GetChangeLanguageText()
+        {
+            return GetChangeLanguageWebElement().Text;
+        }
+
+        // TODO
+        public void SetChangeLanguage(string language)
+        {
+            ChangeLanguage.SelectByText(language);
+        }
+
+        // Business Logic
+    }
+}
