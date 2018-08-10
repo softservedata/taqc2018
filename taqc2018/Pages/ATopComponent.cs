@@ -13,18 +13,31 @@ namespace taqc2018.Pages
 {
     public abstract class ATopComponent
     {
+        public const string SRC_ATTRIBUTE = "src";
+        public const string VALUE_ATTRIBUTE = "value";
+        //
         protected IWebDriver driver;
         //
-        public IWebElement TitleLabel { get; private set; }
-        //{ get { return driver.FindElement(By.XPath("//div[@id='header']/div/h3/..")); } }
-        public SelectElement ChangeLanguage { get; private set; }
+        public IWebElement TitleLabel //{ get; private set; }
+            { get { return driver.FindElement(By.XPath("//div[@id='header']/div/h3/..")); } }
+        public SelectElement ChangeLanguage //{ get; private set; }
+            { get { return new SelectElement(driver.FindElement(By.Id("changeLanguage"))); } }
 
         protected ATopComponent(IWebDriver driver)
         {
             this.driver = driver;
             //
-            TitleLabel = driver.FindElement(By.XPath("//div[@id='header']/div/h3/.."));
-            ChangeLanguage = new SelectElement(driver.FindElement(By.Id("changeLanguage")));
+            // Classic Page Object
+            //TitleLabel = driver.FindElement(By.XPath("//div[@id='header']/div/h3/.."));
+            //ChangeLanguage = new SelectElement(driver.FindElement(By.Id("changeLanguage")));
+            //
+            VerifyWebElements();
+        }
+
+        private void VerifyWebElements()
+        {
+            IWebElement temp = TitleLabel;
+            SelectElement select = ChangeLanguage;
         }
 
         // PageObject Atomic
