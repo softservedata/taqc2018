@@ -9,6 +9,8 @@ using System.Threading;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using taqc2018.UIMapping;
+using OpenQA.Selenium.Support.PageObjects;
+//#pragma warning disable
 
 namespace taqc2018.Pages
 {
@@ -26,15 +28,19 @@ namespace taqc2018.Pages
         public IWebElement LoginLabel //{ get; private set; }
             //{ get { return driver.FindElement(By.XPath("//label[contains(@for,'inputEmail')]")); } }
             { get { return driver.FindElement(By.XPath(LoginPageUIMap.LOGIN_LABEL_XPATH)); } }
+        //[FindsBy(How = How.Id, Using = "login")]
         public IWebElement LoginInput //{ get; private set; }
             //{ get { return driver.FindElement(By.Id("login")); } }
             { get { return driver.FindElement(By.Id(LoginPageUIMap.LOGIN_INPUT_ID)); } }
         public IWebElement PasswordLabel //{ get; private set; }
             //{ get { return driver.FindElement(By.XPath("//label[contains(@for,'inputPassword')]")); } }
             { get { return driver.FindElement(By.XPath(LoginPageUIMap.PASSWORD_LABEL_XPATH)); } }
+        //[CacheLookup]
+        //[FindsBy(How = How.Id, Using = "password")]
         public IWebElement PasswordInput //{ get; private set; }
             //{ get { return driver.FindElement(By.Id("password")); } }
             { get { return driver.FindElement(By.Id(LoginPageUIMap.PASSWORD_INPUT_ID)); } }
+        //[FindsBy(How = How.CssSelector, Using = "button.btn.btn-primary")]
         public IWebElement SigninButton //{ get; private set; }
             //{ get { return driver.FindElement(By.CssSelector("button.btn.btn-primary")); } }
             { get { return driver.FindElement(By.CssSelector(LoginPageUIMap.SIGNIN_BUTTON_CSSSELECTOR)); } }
@@ -44,6 +50,9 @@ namespace taqc2018.Pages
 
         public LoginPage(IWebDriver driver) : base(driver)
         {
+            // PageFactory
+            //PageFactory.InitElements(driver, this);
+            //
             // Classic Page Object
             //InitWebElements();
             VerifyWebElements();

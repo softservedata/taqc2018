@@ -8,7 +8,10 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.PageObjects;
 using taqc2018.Pages;
+using taqc2018.Data.Users;
+//#pragma warning disable
 
 namespace taqc2018
 {
@@ -200,7 +203,7 @@ namespace taqc2018
                 .Contains(LoginPage.IMAGE_NAME));
         }
 
-        [Test]
+        //[Test]
         public void LoginTest6()
         {
             // Steps
@@ -209,6 +212,166 @@ namespace taqc2018
             //
             // Check
             Assert.True(repeatLoginPage.GetInvalidLoginLabelText().Length > 0);
+        }
+
+        //[Test]
+        public void LoginTest7()
+        {
+            // PageFactory. Init Attribute
+            //LoginPage loginPage = new LoginPage(driver);
+            //PageFactory.InitElements(driver, loginPage);
+            //
+            // Steps
+            RegistratorHomePage registratorHomePage = new LoginPage(driver)
+            //RegistratorHomePage registratorHomePage = loginPage
+                .successRegistratorLogin("work", "qwerty");
+            //
+            // Check
+            Assert.AreEqual("work", registratorHomePage.GetLoginNameText());
+        }
+
+        //[Test]
+        public void LoginTest8()
+        {
+            // Steps
+            LoginPage loginPage = new LoginPage(driver)
+                .SetLoginInputClear("work")
+                .SetPasswordInputClear("qwerty");
+            driver.Navigate().Refresh();
+            loginPage
+                .SetLoginInputClear("work")
+                .SetPasswordInputClear("qwerty")
+                .ClickSigninButton();
+        }
+
+        // DataProvider
+        private static readonly object[] Users =
+        {
+            new object[] { "..." }
+        };
+
+        [Test]
+        public void SimpleTest1()
+        {
+            // 1. Classic Constructor
+            //User user = new User(
+            //    "firstname", "lastname", "email",
+            //    "phone", "addressMain", "city",
+            //    "postcode", "coutry", "regionState",
+            //    "password", true);
+            //
+            // 2. Default public Constructor
+            //User user = new User();
+            //user.Firstname = "firstname";
+            //user.Lastname = "lastname";
+            //user.Email = "email";
+            //user.Phone = "phone";
+            //user.AddressMain = "addressMain";
+            //user.City = "city";
+            //user.Postcode = "postcode";
+            //user.Coutry = "coutry";
+            //user.RegionState = "regionState";
+            ////user.Password = "password";
+            //user.Subscribe = true;
+            //user.Fax = "fax";
+            //user.Company = "company";
+            //user.AddressAdd = "addressAdd";
+            //
+            //Console.WriteLine("Login= " + user.Email + "   Password= " + user.Password);
+            //
+            // 3. Add Setters, Getters
+            //User user = new User();
+            //user.SetFirstname("firstname");
+            //user.SetLastname("lastname");
+            //user.SetEmail("email");
+            //user.SetPhone("phone");
+            //user.SetAddressMain("addressMain");
+            //user.SetCity("city");
+            //user.SetPostcode("postcode");
+            //user.SetCoutry("coutry");
+            //user.SetRegionState("regionState");
+            //user.SetPassword("password");
+            //user.SetSubscribe(true);
+            //user.SetFax("fax");
+            //user.SetCompany("company");
+            //user.SetAddressAdd("addressAdd");
+            //
+            // 4. Fluent Interface
+            //User user = new User()
+            //    .SetFirstname("firstname")
+            //    .SetLastname("lastname")
+            //    .SetEmail("email")
+            //    .SetPhone("phone")
+            //    .SetAddressMain("addressMain")
+            //    .SetCity("city")
+            //    .SetPostcode("postcode")
+            //    .SetCoutry("coutry")
+            //    .SetRegionState("regionState")
+            //    //.SetPassword("password")
+            //    .SetSubscribe(true)
+            //    .SetFax("fax")
+            //    .SetCompany("company")
+            //    .SetAddressAdd("addressAdd");
+            //
+            // 5. Static Factory
+            //User user = User.Get()
+            //    .SetFirstname("firstname")
+            //    .SetLastname("lastname")
+            //    .SetEmail("email")
+            //    .SetPhone("phone")
+            //    .SetAddressMain("addressMain")
+            //    .SetCity("city")
+            //    .SetPostcode("postcode")
+            //    .SetCoutry("coutry")
+            //    .SetRegionState("regionState")
+            //    //.SetPassword("password5")
+            //    .SetSubscribe(true)
+            //    .SetFax("fax")
+            //    .SetCompany("company")
+            //    .SetAddressAdd("addressAdd");
+            //
+            // 6. Builder
+            //User user = User.Get()
+            //    .SetFirstname("Firstname")
+            //    .SetLastname("Lastname")
+            //    .SetEmail("Email")
+            //    .SetPhone("123456789")
+            //    .SetAddressMain("AddressMain")
+            //    .SetCity("City")
+            //    .SetPostcode("1234567")
+            //    .SetCoutry("Ukraine")
+            //    .SetRegionState("Ukr")
+            //    .SetPassword("qwerty")
+            //    .SetSubscribe(true)
+            //    .SetFax("12345")
+            //    .SetCompany("Company")
+            //    .SetAddressAdd("AddressAdd")
+            //    .build();
+            //Console.WriteLine("Login= " + user.SetEmail("hahaha")); // Defect
+            //
+            // 7. Dependency Inversion
+            IUser user = User.Get()
+                .SetFirstname("Firstname")
+                .SetLastname("Lastname")
+                .SetEmail("Email")
+                .SetPhone("123456789")
+                .SetAddressMain("AddressMain")
+                .SetCity("City")
+                .SetPostcode("1234567")
+                .SetCoutry("Ukraine")
+                .SetRegionState("Ukr")
+                .SetPassword("qwerty")
+                .SetSubscribe(true)
+                .SetFax("12345")
+                .SetCompany("Company")
+                .SetAddressAdd("AddressAdd")
+                .build();
+            //Console.WriteLine("Login= " + user.SetEmail("hahaha")); // Error
+            Console.WriteLine("Login= " + ((User)user).SetEmail("hahaha")); // (User)user Code Smell
+            //
+            Console.WriteLine("Login= " + user.GetEmail() + "   Password= " + user.GetPassword());
+            //
+
         }
 
     }

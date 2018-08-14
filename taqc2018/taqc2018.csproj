@@ -70,6 +70,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Browsers.cs" />
+    <Compile Include="Data\Users\User.cs" />
+    <Compile Include="Data\Users\UserRepository.cs" />
     <Compile Include="Pages\ACommonComponent.cs" />
     <Compile Include="Pages\ATopComponent.cs" />
     <Compile Include="Pages\LoginPage.cs" />
