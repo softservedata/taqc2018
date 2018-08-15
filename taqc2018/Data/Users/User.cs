@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using taqc2018.Tools;
 
 namespace taqc2018.Data.Users
 {
+    public interface ISetLogin
+    {
+        ISetFirstname SetLogin(string login);
+    }
+
     public interface ISetFirstname
     {
         ISetLastname SetFirstname(string firstname);
@@ -68,11 +74,12 @@ namespace taqc2018.Data.Users
         // 6. Builder
         //User build();
         // 7. Dependency Inversion
-        IUser build();
+        IUser Build();
     }
 
     public interface IUser
     {
+        string GetLogin();
         string GetFirstname();
         string GetLastname();
         string GetEmail();
@@ -89,7 +96,7 @@ namespace taqc2018.Data.Users
         string GetAddressAdd();
     }
 
-    public class User : ISetFirstname, ISetLastname, ISetEmail,
+    public class User : ISetLogin, ISetFirstname, ISetLastname, ISetEmail,
         ISetPhone, ISetAddressMain, ISetCity, ISetPostcode,
         ISetCoutry, ISetRegionState, ISetPassword, ISetSubscribe, IUserBuild, IUser
     {
@@ -113,6 +120,7 @@ namespace taqc2018.Data.Users
         //public string AddressAdd { get; set; }
 
         // Required
+        private string login;
         private string firstname;
         private string lastname;
         private string email;
@@ -190,13 +198,21 @@ namespace taqc2018.Data.Users
         //}
 
         // 6. Builder
-        public static ISetFirstname Get()
+        //public static ISetFirstname Get()
+        public static ISetLogin Get()
         {
             return new User();
         }
 
         // 3. Add Setters, Getters
         // Setters
+
+        public ISetFirstname SetLogin(string login)
+        {
+            this.login = login;
+            return this;
+        }
+
         //public void SetFirstname(string firstname)
 
         // 4. Fluent Interface
@@ -290,12 +306,17 @@ namespace taqc2018.Data.Users
         // 6. Builder
         //public User build()
         // 7. Dependency Inversion
-        public IUser build()
+        public IUser Build()
         {
             return this;
         }
 
         // Getters
+
+        public string GetLogin()
+        {
+            return login;
+        }
 
         public string GetFirstname()
         {
@@ -364,6 +385,39 @@ namespace taqc2018.Data.Users
         public string GetAddressAdd()
         {
             return addressAdd;
+        }
+
+        // Static Factory
+
+        public static IList<IUser> GetAllUsers(AExternalReader externalData)
+        {
+            //logger.Debug("Start GetAllUsers, path = " + path);
+            IList<IUser> users = new List<IUser>();
+            foreach (IList<string> row in externalData.GetAllCells())
+            {
+                if (row[3].ToLower().Equals("email")
+                        && row[10].ToLower().Equals("password"))
+                {
+                    continue;
+                }
+                users.Add(Get()
+                        .SetLogin(row[0])
+                        .SetFirstname(row[1])
+                        .SetLastname(row[2])
+                        .SetEmail(row[3])
+                        .SetPhone(row[4])
+                        .SetAddressMain(row[5])
+                        .SetCity(row[6])
+                        .SetPostcode(row[7])
+                        .SetCoutry(row[8])
+                        .SetRegionState(row[9])
+                        .SetPassword(row[10])
+                        .SetSubscribe(row[11].ToLower().Equals("true"))
+                        .Build());
+                //logger.Debug("Add User Firstname= " + row[1] + " Lastname = " + row[2] + " Email = " + row[3]);
+            }
+            //logger.Debug("Done GetAllUsers, path = " + externalData.GetConnection());
+            return users;
         }
 
     }

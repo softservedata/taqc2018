@@ -10,6 +10,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using taqc2018.UIMapping;
 using OpenQA.Selenium.Support.PageObjects;
+using taqc2018.Data.Users;
 //#pragma warning disable
 
 namespace taqc2018.Pages
@@ -188,36 +189,35 @@ namespace taqc2018.Pages
 
         // Business Logic
         //public LoginPage changeLanguage(ChangeLanguageFields language)
-        public LoginPage ChangeLanguage(string language)
+        public LoginPage ChangeLanguage(string language) // TODO
         {
             SetChangeLanguage(language);
             return new LoginPage(driver);
         }
 
-        // TODO
-        //private void SetLoginData(IUser user)
-        private void SetLoginData(string login, string password)
+        private void SetLoginData(IUser user)
+        //private void SetLoginData(string login, string password)
         {
-            //SetLoginInputClear(user.getEmail());
-            SetLoginInputClear(login);
-            //SetPasswordInputClear(user.getPassword());
-            SetPasswordInputClear(password);
+            SetLoginInputClear(user.GetLogin());
+            //SetLoginInputClear(login);
+            SetPasswordInputClear(user.GetPassword());
+            //SetPasswordInputClear(password);
             ClickSigninButton();
         }
 
-        //public LoginPage unsuccessfulLogin(IUser invalidUser)
-        public RepeatLoginPage unsuccessfulLogin(string invalidLogin, string invalidPassword)
+        public RepeatLoginPage unsuccessfulLogin(IUser invalidUser)
+        //public RepeatLoginPage unsuccessfulLogin(string invalidLogin, string invalidPassword)
         {
-            //SetLoginData(invalidUser);
-            SetLoginData(invalidLogin, invalidPassword);
+            SetLoginData(invalidUser);
+            //SetLoginData(invalidLogin, invalidPassword);
             return new RepeatLoginPage(driver);
         }
 
-        //public RegistratorHomePage successRegistratorLogin(IUser registrator)
-        public RegistratorHomePage successRegistratorLogin(string registratorLogin, string registratorPassword)
+        public RegistratorHomePage successRegistratorLogin(IUser registrator)
+        //public RegistratorHomePage successRegistratorLogin(string registratorLogin, string registratorPassword)
         {
-            //SetLoginData(registrator);
-            SetLoginData(registratorLogin, registratorPassword);
+            SetLoginData(registrator);
+            //SetLoginData(registratorLogin, registratorPassword);
             return new RegistratorHomePage(driver);
         }
 

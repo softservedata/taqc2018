@@ -11,6 +11,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.PageObjects;
 using taqc2018.Pages;
 using taqc2018.Data.Users;
+using taqc2018.Tools;
 //#pragma warning disable
 
 namespace taqc2018
@@ -177,7 +178,8 @@ namespace taqc2018
             //    .ClickSigninButton();
             //
             new LoginPage(driver)
-                .successRegistratorLogin("work", "qwerty");
+            //    .successRegistratorLogin("work", "qwerty");
+                .successRegistratorLogin(UserRepository.Get().Registered());
             //
             Thread.Sleep(4000); // For Presentation ONLY
             //
@@ -188,7 +190,8 @@ namespace taqc2018
         {
             // Steps
             RegistratorHomePage registratorHomePage = new LoginPage(driver)
-                .successRegistratorLogin("work", "qwerty");
+            //    .successRegistratorLogin("work", "qwerty");
+                .successRegistratorLogin(UserRepository.Get().Registered());
             //
             // Check
             Assert.AreEqual("work", registratorHomePage.GetLoginNameText());
@@ -208,7 +211,8 @@ namespace taqc2018
         {
             // Steps
             RepeatLoginPage repeatLoginPage = new LoginPage(driver)
-                .unsuccessfulLogin("hahaha", "qwerty");
+            //    .unsuccessfulLogin("hahaha", "qwerty");
+                .unsuccessfulLogin(UserRepository.Get().Invalid());
             //
             // Check
             Assert.True(repeatLoginPage.GetInvalidLoginLabelText().Length > 0);
@@ -224,7 +228,8 @@ namespace taqc2018
             // Steps
             RegistratorHomePage registratorHomePage = new LoginPage(driver)
             //RegistratorHomePage registratorHomePage = loginPage
-                .successRegistratorLogin("work", "qwerty");
+            //    .successRegistratorLogin("work", "qwerty");
+                .successRegistratorLogin(UserRepository.Get().Registered());
             //
             // Check
             Assert.AreEqual("work", registratorHomePage.GetLoginNameText());
@@ -244,13 +249,7 @@ namespace taqc2018
                 .ClickSigninButton();
         }
 
-        // DataProvider
-        private static readonly object[] Users =
-        {
-            new object[] { "..." }
-        };
-
-        [Test]
+        //[Test]
         public void SimpleTest1()
         {
             // 1. Classic Constructor
@@ -350,29 +349,62 @@ namespace taqc2018
             //Console.WriteLine("Login= " + user.SetEmail("hahaha")); // Defect
             //
             // 7. Dependency Inversion
-            IUser user = User.Get()
-                .SetFirstname("Firstname")
-                .SetLastname("Lastname")
-                .SetEmail("Email")
-                .SetPhone("123456789")
-                .SetAddressMain("AddressMain")
-                .SetCity("City")
-                .SetPostcode("1234567")
-                .SetCoutry("Ukraine")
-                .SetRegionState("Ukr")
-                .SetPassword("qwerty")
-                .SetSubscribe(true)
-                .SetFax("12345")
-                .SetCompany("Company")
-                .SetAddressAdd("AddressAdd")
-                .build();
+            //IUser user = User.Get()
+            //    .SetLogin("Login")
+            //    .SetFirstname("Firstname")
+            //    .SetLastname("Lastname")
+            //    .SetEmail("Email")
+            //    .SetPhone("123456789")
+            //    .SetAddressMain("AddressMain")
+            //    .SetCity("City")
+            //    .SetPostcode("1234567")
+            //    .SetCoutry("Ukraine")
+            //    .SetRegionState("Ukr")
+            //    .SetPassword("qwerty")
+            //    .SetSubscribe(true)
+            //    .SetFax("12345")
+            //    .SetCompany("Company")
+            //    .SetAddressAdd("AddressAdd")
+            //    .Build();
             //Console.WriteLine("Login= " + user.SetEmail("hahaha")); // Error
-            Console.WriteLine("Login= " + ((User)user).SetEmail("hahaha")); // (User)user Code Smell
+            //Console.WriteLine("Login= " + ((User)user).SetEmail("hahaha")); // (User)user Code Smell
             //
-            Console.WriteLine("Login= " + user.GetEmail() + "   Password= " + user.GetPassword());
-            //
-
+            // 8. Singleton. Repository
+            IUser user = UserRepository.Get().Registered();
+            Console.WriteLine("Login= " + user.GetLogin() + "   Password= " + user.GetPassword());
         }
 
+        // DataProvider
+        private static readonly object[] ValidUsers =
+        {
+            new object[] { UserRepository.Get().Registered() },
+            new object[] { UserRepository.Get().Registered() }
+        };
+
+        // DataProvider
+        private static readonly object[] ExternalValidUsers =
+            //ListUtils.ToMultiArray(UserRepository.Get().FromCsv());
+            ListUtils.ToMultiArray(UserRepository.Get().FromExcel());
+
+        //[Test, TestCaseSource(nameof(ValidUsers))]
+        //[Test, TestCaseSource("ValidUsers")]
+        [Test, TestCaseSource("ExternalValidUsers")]
+        public void LoginTest9(IUser validRegistrator)
+        {
+            // Steps
+            RegistratorHomePage registratorHomePage = new LoginPage(driver)
+                .successRegistratorLogin(validRegistrator);
+            //
+            // Check
+            Assert.AreEqual(validRegistrator.GetLogin(), registratorHomePage.GetLoginNameText(),
+                "Assert Error. Invalid User Login.");
+            //
+            // Steps
+            LoginPage loginPage = registratorHomePage.Logout();
+            //
+            // Check
+            Assert.True(loginPage.GetLogoPictureSrcAttributeText()
+                .Contains(LoginPage.IMAGE_NAME), "Assert Error. LoginPage not Found.");
+        }
     }
 }
