@@ -76,6 +76,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Browsers.cs" />
+    <Compile Include="Data\Application\ApplicationSource.cs" />
+    <Compile Include="Data\Application\ApplicationSourceRepository.cs" />
     <Compile Include="Data\Users\User.cs" />
     <Compile Include="Data\Users\UserRepository.cs" />
     <Compile Include="Pages\ACommonComponent.cs" />
@@ -86,11 +88,14 @@
     <Compile Include="SeleniumFirst.cs" />
     <Compile Include="SeleniumFirst2.cs" />
     <Compile Include="SeleniumSecond.cs" />
+    <Compile Include="SmokeTest.cs" />
+    <Compile Include="Tools\Application.cs" />
     <Compile Include="Tools\BrowserWrapper.cs" />
     <Compile Include="Tools\CSVReader.cs" />
     <Compile Include="Tools\AExternalReader.cs" />
     <Compile Include="Tools\ExcelReader.cs" />
     <Compile Include="Tools\ListUtils.cs" />
+    <Compile Include="Tools\TestRunner.cs" />
     <Compile Include="ToolTipTest.cs" />
     <Compile Include="UIMapping\LoginPageUIMap.cs" />
     <Compile Include="UnitTest1.cs" />

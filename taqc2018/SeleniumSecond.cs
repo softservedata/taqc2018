@@ -388,7 +388,7 @@ namespace taqc2018
 
         //[Test, TestCaseSource(nameof(ValidUsers))]
         //[Test, TestCaseSource("ValidUsers")]
-        [Test, TestCaseSource("ExternalValidUsers")]
+        //[Test, TestCaseSource("ExternalValidUsers")]
         public void LoginTest9(IUser validRegistrator)
         {
             // Steps

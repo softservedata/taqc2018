@@ -10,8 +10,8 @@ namespace taqc2018.Tools
 {
     public abstract class AExternalReader
     {
-        protected const int PATH_PREFIX = 6;
-        protected const string PATH_SEPARATOR = "\\";
+        public const int PATH_PREFIX = 6;
+        public const string PATH_SEPARATOR = "\\";
         protected const string FOLDER_DATA = "Resources";
         protected const string FOLDER_BIN = "bin";
 
@@ -24,9 +24,9 @@ namespace taqc2018.Tools
             Path = System.IO.Path.GetDirectoryName(Assembly.GetAssembly(typeof(AExternalReader)).CodeBase)
                     .Substring(PATH_PREFIX);
             Path = Path.Remove(Path.IndexOf(FOLDER_BIN)) + FOLDER_DATA + PATH_SEPARATOR + filename;
-            MessageBox.Show("Path.GetDirectoryName(Assembly.GetAssembly(typeof(AExternalReader)).CodeBase):\n"
-                + System.IO.Path.GetDirectoryName(Assembly.GetAssembly(typeof(AExternalReader)).CodeBase),
-                "Full PATH ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show("Path.GetDirectoryName(Assembly.GetAssembly(typeof(AExternalReader)).CodeBase):\n"
+            //    + System.IO.Path.GetDirectoryName(Assembly.GetAssembly(typeof(AExternalReader)).CodeBase),
+            //    "Full PATH ", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public abstract IList<IList<string>> GetAllCells();
