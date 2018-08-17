@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using taqc2018.Data.Application;
 using taqc2018.Pages;
+using taqc2018.Tools.Find;
 
 namespace taqc2018.Tools
 {
@@ -18,7 +19,20 @@ namespace taqc2018.Tools
         public ApplicationSource ApplicationSource { get; private set; }
         //public FlexAssert FlexAssert { get; private set; }
         public BrowserWrapper Browser { get; private set; }
-        //public ISearch Search { get; private set; }
+        private ISearch search;
+        public ISearch Search
+        {
+            get
+            { if (search == null)
+                { InitSearch();
+                }
+                return search;
+            }
+            private set
+            {
+                search = value;
+            }
+        }
         //public DBConnectionWrapper dbConnection { get; private set; }
 
         private Application(ApplicationSource applicationSource)
@@ -46,7 +60,7 @@ namespace taqc2018.Tools
                         instance = new Application(applicationSource);
                         //
                         instance.InitBrowser(applicationSource);
-                        instance.InitSearch(applicationSource);
+                        //instance.InitSearch();
                     }
                 }
             }
@@ -69,17 +83,17 @@ namespace taqc2018.Tools
             this.Browser = new BrowserWrapper(applicationSource);
         }
 
-        private void InitSearch(ApplicationSource applicationSource)
+        private void InitSearch()
         {
-            //this.Search = new SearchElement(applicationSource);
+            this.Search = new SearchElement();
         }
 
         public LoginPage LoadLoginPage()
         {
             //log.Debug("Start LoadLoginPage()");
             Browser.OpenUrl(ApplicationSource.LoginUrl);
-            return new LoginPage(Browser.Driver);
-            //return new LoginPage();
+            //return new LoginPage(Browser.Driver);
+            return new LoginPage();
         }
 
         //public LogoutPage LogoutAction()
@@ -87,8 +101,8 @@ namespace taqc2018.Tools
         //public void LogoutAction()
         {
             Browser.OpenUrl(ApplicationSource.LogoutUrl);
-            return new LoginPage(Browser.Driver);
-            //return new LogoutPage();
+            //return new LoginPage(Browser.Driver);
+            return new LoginPage();
         }
 
         public void SaveCurrentState()

@@ -8,35 +8,46 @@ using OpenQA.Selenium.Chrome;
 using System.Threading;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using taqc2018.Tools;
+using taqc2018.Tools.Find;
 
 namespace taqc2018.Pages
 {
     class UserDropDownMenu
     {
-        private IWebDriver driver;
+        protected ISearch Search { get; private set; }
+        //private IWebDriver driver;
         //
         public IWebElement ChangePassword
-            { get { return driver.FindElement(By.CssSelector("a.change-password")); } }
+            //{ get { return driver.FindElement(By.CssSelector("a.change-password")); } }
+            { get { return Search.CssSelector("a.change-password"); } }
         public IWebElement ResetPassword
-            { get { return driver.FindElement(By.CssSelector("a.reset-my-password")); } }
+            //{ get { return driver.FindElement(By.CssSelector("a.reset-my-password")); } }
+            { get { return Search.CssSelector("a.reset-my-password"); } }
         public IWebElement Logout
-            { get { return driver.FindElement(By.XPath("//a[contains(@href,'/logout')]")); } }
+            //{ get { return driver.FindElement(By.XPath("//a[contains(@href,'/logout')]")); } }
+            { get { return Search.XPath("//a[contains(@href,'/logout')]"); } }
 
-        public UserDropDownMenu(IWebDriver driver)
+        //public UserDropDownMenu(IWebDriver driver)
+        public UserDropDownMenu()
         {
-            this.driver = driver;
+            Search = Application.Get().Search;
+            //this.driver = driver;
         }
     }
 
     public abstract class ACommonComponent : ATopComponent
     {
         public IWebElement LoginName //{ get; private set; }
-            { get { return driver.FindElement(By.CssSelector(".btn.btn-primary.btn-sm:not(.dropdown-toggle)")); } }
+            //{ get { return driver.FindElement(By.CssSelector(".btn.btn-primary.btn-sm:not(.dropdown-toggle)")); } }
+            { get { return Search.CssSelector(".btn.btn-primary.btn-sm:not(.dropdown-toggle)"); } }
         public IWebElement DropDownMenu //{ get; private set; }
-            { get { return driver.FindElement(By.CssSelector(".btn.btn-primary.btn-sm.dropdown-toggle")); } }
+            //{ get { return driver.FindElement(By.CssSelector(".btn.btn-primary.btn-sm.dropdown-toggle")); } }
+            { get { return Search.CssSelector(".btn.btn-primary.btn-sm.dropdown-toggle"); } }
         private UserDropDownMenu userDropDownMenu;
 
-        public ACommonComponent(IWebDriver driver) : base(driver)
+        //public ACommonComponent(IWebDriver driver) : base(driver)
+        public ACommonComponent() : base()
         {
             // Classic Page Object
             //LoginAccount = driver.FindElement(By.CssSelector(".btn.btn-primary.btn-sm:not(.dropdown-toggle)"));
@@ -75,7 +86,8 @@ namespace taqc2018.Pages
         {
             ClickLoginName();
             ClickDropDownMenu();
-            userDropDownMenu = new UserDropDownMenu(driver);
+            //userDropDownMenu = new UserDropDownMenu(driver);
+            userDropDownMenu = new UserDropDownMenu();
         }
 
         // ChangePassword
@@ -133,7 +145,8 @@ namespace taqc2018.Pages
         public LoginPage Logout()
         {
             ClickLogout();
-            return new LoginPage(driver);
+            //return new LoginPage(driver);
+            return new LoginPage();
         }
 
     }

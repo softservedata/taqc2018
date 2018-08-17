@@ -24,6 +24,7 @@ namespace taqc2018
         [OneTimeSetUp]
         public void BeforeAllMethods()
         {
+            Application.Get();
             driver = new ChromeDriver();
             //driver = new FirefoxDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -177,7 +178,8 @@ namespace taqc2018
             //    .SetPasswordInputClear("qwerty")
             //    .ClickSigninButton();
             //
-            new LoginPage(driver)
+            //new LoginPage(driver)
+            new LoginPage()
             //    .successRegistratorLogin("work", "qwerty");
                 .successRegistratorLogin(UserRepository.Get().Registered());
             //
@@ -189,7 +191,8 @@ namespace taqc2018
         public void LoginTest5()
         {
             // Steps
-            RegistratorHomePage registratorHomePage = new LoginPage(driver)
+            //RegistratorHomePage registratorHomePage = new LoginPage(driver)
+            RegistratorHomePage registratorHomePage = new LoginPage()
             //    .successRegistratorLogin("work", "qwerty");
                 .successRegistratorLogin(UserRepository.Get().Registered());
             //
@@ -210,7 +213,8 @@ namespace taqc2018
         public void LoginTest6()
         {
             // Steps
-            RepeatLoginPage repeatLoginPage = new LoginPage(driver)
+            //RepeatLoginPage repeatLoginPage = new LoginPage(driver)
+            RepeatLoginPage repeatLoginPage = new LoginPage()
             //    .unsuccessfulLogin("hahaha", "qwerty");
                 .unsuccessfulLogin(UserRepository.Get().Invalid());
             //
@@ -226,7 +230,8 @@ namespace taqc2018
             //PageFactory.InitElements(driver, loginPage);
             //
             // Steps
-            RegistratorHomePage registratorHomePage = new LoginPage(driver)
+            //RegistratorHomePage registratorHomePage = new LoginPage(driver)
+            RegistratorHomePage registratorHomePage = new LoginPage()
             //RegistratorHomePage registratorHomePage = loginPage
             //    .successRegistratorLogin("work", "qwerty");
                 .successRegistratorLogin(UserRepository.Get().Registered());
@@ -239,7 +244,8 @@ namespace taqc2018
         public void LoginTest8()
         {
             // Steps
-            LoginPage loginPage = new LoginPage(driver)
+            //LoginPage loginPage = new LoginPage(driver)
+            LoginPage loginPage = new LoginPage()
                 .SetLoginInputClear("work")
                 .SetPasswordInputClear("qwerty");
             driver.Navigate().Refresh();
@@ -392,7 +398,8 @@ namespace taqc2018
         public void LoginTest9(IUser validRegistrator)
         {
             // Steps
-            RegistratorHomePage registratorHomePage = new LoginPage(driver)
+            //RegistratorHomePage registratorHomePage = new LoginPage(driver)
+            RegistratorHomePage registratorHomePage = new LoginPage()
                 .successRegistratorLogin(validRegistrator);
             //
             // Check

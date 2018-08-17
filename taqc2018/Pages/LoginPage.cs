@@ -28,28 +28,35 @@ namespace taqc2018.Pages
         //
         public IWebElement LoginLabel //{ get; private set; }
             //{ get { return driver.FindElement(By.XPath("//label[contains(@for,'inputEmail')]")); } }
-            { get { return driver.FindElement(By.XPath(LoginPageUIMap.LOGIN_LABEL_XPATH)); } }
+            //{ get { return driver.FindElement(By.XPath(LoginPageUIMap.LOGIN_LABEL_XPATH)); } }
+            { get { return Search.XPath(LoginPageUIMap.LOGIN_LABEL_XPATH); } }
         //[FindsBy(How = How.Id, Using = "login")]
         public IWebElement LoginInput //{ get; private set; }
             //{ get { return driver.FindElement(By.Id("login")); } }
-            { get { return driver.FindElement(By.Id(LoginPageUIMap.LOGIN_INPUT_ID)); } }
+            //{ get { return driver.FindElement(By.Id(LoginPageUIMap.LOGIN_INPUT_ID)); } }
+            { get { return Search.Id(LoginPageUIMap.LOGIN_INPUT_ID); } }
         public IWebElement PasswordLabel //{ get; private set; }
             //{ get { return driver.FindElement(By.XPath("//label[contains(@for,'inputPassword')]")); } }
-            { get { return driver.FindElement(By.XPath(LoginPageUIMap.PASSWORD_LABEL_XPATH)); } }
+            //{ get { return driver.FindElement(By.XPath(LoginPageUIMap.PASSWORD_LABEL_XPATH)); } }
+            { get { return Search.XPath(LoginPageUIMap.PASSWORD_LABEL_XPATH); } }
         //[CacheLookup]
         //[FindsBy(How = How.Id, Using = "password")]
         public IWebElement PasswordInput //{ get; private set; }
             //{ get { return driver.FindElement(By.Id("password")); } }
-            { get { return driver.FindElement(By.Id(LoginPageUIMap.PASSWORD_INPUT_ID)); } }
+            //{ get { return driver.FindElement(By.Id(LoginPageUIMap.PASSWORD_INPUT_ID)); } }
+            { get { return Search.Id(LoginPageUIMap.PASSWORD_INPUT_ID); } }
         //[FindsBy(How = How.CssSelector, Using = "button.btn.btn-primary")]
         public IWebElement SigninButton //{ get; private set; }
             //{ get { return driver.FindElement(By.CssSelector("button.btn.btn-primary")); } }
-            { get { return driver.FindElement(By.CssSelector(LoginPageUIMap.SIGNIN_BUTTON_CSSSELECTOR)); } }
+            //{ get { return driver.FindElement(By.CssSelector(LoginPageUIMap.SIGNIN_BUTTON_CSSSELECTOR)); } }
+            { get { return Search.CssSelector(LoginPageUIMap.SIGNIN_BUTTON_CSSSELECTOR); } }
         public IWebElement LogoPicture //{ get; private set; }
             //{ get { return driver.FindElement(By.CssSelector("img.login_logo.col-md-8.col-xs-12")); } }
-            { get { return driver.FindElement(By.CssSelector(LoginPageUIMap.LOGO_PICTURE_CSSSELECTOR)); } }
+            //{ get { return driver.FindElement(By.CssSelector(LoginPageUIMap.LOGO_PICTURE_CSSSELECTOR)); } }
+            { get { return Search.CssSelector(LoginPageUIMap.LOGO_PICTURE_CSSSELECTOR); } }
 
-        public LoginPage(IWebDriver driver) : base(driver)
+        //public LoginPage(IWebDriver driver) : base(driver)
+        public LoginPage() : base()
         {
             // PageFactory
             //PageFactory.InitElements(driver, this);
@@ -192,7 +199,8 @@ namespace taqc2018.Pages
         public LoginPage ChangeLanguage(string language) // TODO
         {
             SetChangeLanguage(language);
-            return new LoginPage(driver);
+            //return new LoginPage(driver);
+            return new LoginPage();
         }
 
         private void SetLoginData(IUser user)
@@ -210,7 +218,8 @@ namespace taqc2018.Pages
         {
             SetLoginData(invalidUser);
             //SetLoginData(invalidLogin, invalidPassword);
-            return new RepeatLoginPage(driver);
+            //return new RepeatLoginPage(driver);
+            return new RepeatLoginPage();
         }
 
         public RegistratorHomePage successRegistratorLogin(IUser registrator)
@@ -218,7 +227,8 @@ namespace taqc2018.Pages
         {
             SetLoginData(registrator);
             //SetLoginData(registratorLogin, registratorPassword);
-            return new RegistratorHomePage(driver);
+            //return new RegistratorHomePage(driver);
+            return new RegistratorHomePage();
         }
 
     }

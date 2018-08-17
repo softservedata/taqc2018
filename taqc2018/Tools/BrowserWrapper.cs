@@ -141,8 +141,8 @@ namespace taqc2018.Tools
             Driver = currentBrowser.GetBrowser(applicationSource);
 
             // TODO Move to Search Class
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan
-                    .FromSeconds(applicationSource.ImplicitWaitTimeOut);
+            //Driver.Manage().Timeouts().ImplicitWait = TimeSpan
+            //        .FromSeconds(applicationSource.ImplicitWaitTimeOut);
         }
 
         private string GetTime()

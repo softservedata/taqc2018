@@ -94,6 +94,11 @@
     <Compile Include="Tools\CSVReader.cs" />
     <Compile Include="Tools\AExternalReader.cs" />
     <Compile Include="Tools\ExcelReader.cs" />
+    <Compile Include="Tools\Find\ASearch.cs" />
+    <Compile Include="Tools\Find\ISearch.cs" />
+    <Compile Include="Tools\Find\SearchElement.cs" />
+    <Compile Include="Tools\Find\SearchExplicit.cs" />
+    <Compile Include="Tools\Find\SearchImplicit.cs" />
     <Compile Include="Tools\ListUtils.cs" />
     <Compile Include="Tools\TestRunner.cs" />
     <Compile Include="ToolTipTest.cs" />

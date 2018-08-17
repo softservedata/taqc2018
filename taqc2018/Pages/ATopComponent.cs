@@ -8,6 +8,8 @@ using OpenQA.Selenium.Chrome;
 using System.Threading;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using taqc2018.Tools;
+using taqc2018.Tools.Find;
 
 namespace taqc2018.Pages
 {
@@ -16,16 +18,21 @@ namespace taqc2018.Pages
         public const string SRC_ATTRIBUTE = "src";
         public const string VALUE_ATTRIBUTE = "value";
         //
-        protected IWebDriver driver;
+        protected ISearch Search { get; private set; }
+        //protected IWebDriver driver;
         //
         public IWebElement TitleLabel //{ get; private set; }
-            { get { return driver.FindElement(By.XPath("//div[@id='header']/div/h3/..")); } }
+            //{ get { return driver.FindElement(By.XPath("//div[@id='header']/div/h3/..")); } }
+            { get { return Search.XPath("//div[@id='header']/div/h3/.."); } }
         public SelectElement ChangeLanguage //{ get; private set; }
-            { get { return new SelectElement(driver.FindElement(By.Id("changeLanguage"))); } }
+            //{ get { return new SelectElement(driver.FindElement(By.Id("changeLanguage"))); } }
+            { get { return new SelectElement(Search.Id("changeLanguage")); } }
 
-        protected ATopComponent(IWebDriver driver)
+        //protected ATopComponent(IWebDriver driver)
+        protected ATopComponent()
         {
-            this.driver = driver;
+            Search = Application.Get().Search;
+            //this.driver = driver;
             //
             // Classic Page Object
             //TitleLabel = driver.FindElement(By.XPath("//div[@id='header']/div/h3/.."));

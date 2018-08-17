@@ -14,15 +14,20 @@ namespace taqc2018.Pages
     public class RegistratorHomePage : ACommonComponent
     {
         public IWebElement Home
-            { get { return driver.FindElement(By.CssSelector("a.glyphicon.glyphicon-home")); }}
+            //{ get { return driver.FindElement(By.CssSelector("a.glyphicon.glyphicon-home")); }}
+            { get { return Search.CssSelector("a.glyphicon.glyphicon-home"); }}
         public IWebElement SearchResources
-            { get { return driver.FindElement(By.XPath("//a[contains(@href,'/searchOnMap')]")); } }
+            //{ get { return driver.FindElement(By.XPath("//a[contains(@href,'/searchOnMap')]")); } }
+            { get { return Search.XPath("//a[contains(@href,'/searchOnMap')]"); } }
         public IWebElement SubclassObjects
-            { get { return driver.FindElement(By.XPath("//a[contains(@href,'/show-res-types')]")); } }
+            //{ get { return driver.FindElement(By.XPath("//a[contains(@href,'/show-res-types')]")); } }
+            { get { return Search.XPath("//a[contains(@href,'/show-res-types')]"); } }
         public IWebElement AddNewResource
-            { get { return driver.FindElement(By.XPath("//a[contains(@href,'/new')]")); } }
+            //{ get { return driver.FindElement(By.XPath("//a[contains(@href,'/new')]")); } }
+            { get { return Search.XPath("//a[contains(@href,'/new')]"); } }
 
-        public RegistratorHomePage(IWebDriver driver) : base(driver)
+        //public RegistratorHomePage(IWebDriver driver) : base(driver)
+        public RegistratorHomePage() : base()
         {
             //VerifyWebElements();
         }

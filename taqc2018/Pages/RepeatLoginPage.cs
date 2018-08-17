@@ -15,9 +15,11 @@ namespace taqc2018.Pages
     {
         public IWebElement InvalidLoginLabel { get; private set; }
 
-        public RepeatLoginPage(IWebDriver driver) : base(driver)
+        //public RepeatLoginPage(IWebDriver driver) : base(driver)
+        public RepeatLoginPage() : base()
         {
-            InvalidLoginLabel = driver.FindElement(By.XPath("//div[contains(@style,'red')]"));
+            //InvalidLoginLabel = driver.FindElement(By.XPath("//div[contains(@style,'red')]"));
+            InvalidLoginLabel = Search.XPath("//div[contains(@style,'red')]");
         }
 
         // PageObject Atomic
