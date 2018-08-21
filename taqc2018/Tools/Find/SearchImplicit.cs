@@ -12,7 +12,8 @@ using OpenQA.Selenium.Support.PageObjects;
 
 namespace taqc2018.Tools.Find
 {
-    public class SearchImplicit : ASearch, ISearch
+    //public class SearchImplicit : ASearch, ISearch
+    public class SearchImplicit : ASearch
     {
         public SearchImplicit()
         {
@@ -26,18 +27,47 @@ namespace taqc2018.Tools.Find
             // TODO ImplicitLoadTimeOut, ImplicitScriptTimeOut
         }
 
-        public override bool StalenessOfWebElement(IWebElement IWebElement)
+        public override bool StalenessOfWebElement(IWebElement element)
         {
-            //DateTime localDate = DateTime.Now;
-            //GetTimestamp(DateTime.Now);
-            // TODO +++ webElement == null || !webElement.Enabled;
-            return true;
+            bool result = false;
+            long startTime = GetSecondStamp();
+            while ((GetSecondStamp() - startTime <= Application.Get().ApplicationSource.ImplicitWaitTimeOut)
+                   && !result)
+            {
+                try
+                {
+                    result = element == null || !element.Enabled || !element.Displayed;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    result = true;
+                    break;
+                }
+                Thread.Sleep(TIME_SLEEP_MILLISECONDS);
+            }
+            return result;
         }
 
         public override bool InvisibilityOfWebElementLocated(By by)
         {
-            // TODO +++ webElement == null || !webElement.Enabled;
-            return true;
+            bool result = false;
+            long startTime = GetSecondStamp();
+            while ((GetSecondStamp() - startTime <= Application.Get().ApplicationSource.ImplicitWaitTimeOut)
+                  && !result)
+            {
+                try
+                {
+                    result = GetWebElement(by) == null || !GetWebElement(by).Enabled || !GetWebElement(by).Displayed;
+                }
+                //catch (StaleElementReferenceException)
+                catch (Exception)
+                {
+                    result = true;
+                    break;
+                }
+                Thread.Sleep(TIME_SLEEP_MILLISECONDS);
+            }
+            return result;
         }
 
         public override IWebElement GetWebElement(By by)

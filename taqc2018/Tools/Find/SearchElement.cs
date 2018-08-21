@@ -12,7 +12,8 @@ using OpenQA.Selenium.Support.UI;
 
 namespace taqc2018.Tools.Find
 {
-    public class SearchElement : ISearch
+    //public class SearchElement : ISearch
+    public class SearchElement : ISearchStrategy
     {
         public ASearch Search { get; private set; }
 

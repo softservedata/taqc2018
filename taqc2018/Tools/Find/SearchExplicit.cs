@@ -14,7 +14,7 @@ namespace taqc2018.Tools.Find
 {
     public class SearchExplicit : ASearch, ISearch
     {
-        private WebDriverWait wait;
+        //private WebDriverWait wait;
 
         public SearchExplicit()
         {
@@ -25,14 +25,13 @@ namespace taqc2018.Tools.Find
         {
             Application.Get().Browser.Driver.Manage().Timeouts().ImplicitWait
                 = TimeSpan.FromSeconds(0);
-            wait = new WebDriverWait(Application.Get().Browser.Driver,
-                TimeSpan.FromSeconds(Application.Get().ApplicationSource.ExplicitTimeOut));
+            //wait = new WebDriverWait(Application.Get().Browser.Driver,
+            //    TimeSpan.FromSeconds(Application.Get().ApplicationSource.ExplicitTimeOut));
             // TODO ImplicitLoadTimeOut, ImplicitScriptTimeOut
         }
 
         public static Func<IWebDriver, bool> StalenessOf(IWebElement element)
         {
-            // TODO
             return (driver) =>
             {
                 try
@@ -50,7 +49,9 @@ namespace taqc2018.Tools.Find
 
         public override bool StalenessOfWebElement(IWebElement IWebElement)
         {
-            return wait.Until(StalenessOf(IWebElement));
+            return new WebDriverWait(Application.Get().Browser.Driver,
+                    TimeSpan.FromSeconds(Application.Get().ApplicationSource.ExplicitTimeOut))
+                    .Until(StalenessOf(IWebElement));
         }
 
         public static Func<IWebDriver, bool> InvisibilityOfElementLocated(By locator)
@@ -80,18 +81,44 @@ namespace taqc2018.Tools.Find
 
         public override bool InvisibilityOfWebElementLocated(By by)
         {
-            return wait.Until(InvisibilityOfElementLocated(by));
+            return new WebDriverWait(Application.Get().Browser.Driver,
+                    TimeSpan.FromSeconds(Application.Get().ApplicationSource.ExplicitTimeOut))
+                    .Until(InvisibilityOfElementLocated(by));
         }
 
         public override IWebElement GetWebElement(By by)
         {
-            return wait.Until(driver => driver.FindElement(by));
+            return new WebDriverWait(Application.Get().Browser.Driver,
+                    TimeSpan.FromSeconds(Application.Get().ApplicationSource.ExplicitTimeOut))
+                    .Until(driver => driver.FindElement(by));
+        }
+
+        public static Func<IWebDriver, ICollection<IWebElement>> VisibilityOfAllElementsLocatedBy(By by)
+        {
+            return (driver) =>
+            {
+                try
+                {
+                    var elements = driver.FindElements(by);
+                    if (elements.Any(element => !element.Displayed))
+                    {
+                        return null;
+                    }
+
+                    return elements.Any() ? elements : null;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    return null;
+                }
+            };
         }
 
         public override ICollection<IWebElement> GetWebElements(By by)
         {
-            // TODO +++
-            return Application.Get().Browser.Driver.FindElements(by);
+            return new WebDriverWait(Application.Get().Browser.Driver,
+                    TimeSpan.FromSeconds(Application.Get().ApplicationSource.ExplicitTimeOut))
+                    .Until(VisibilityOfAllElementsLocatedBy(by));
         }
 
     }

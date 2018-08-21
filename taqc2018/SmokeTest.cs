@@ -16,6 +16,7 @@ using taqc2018.Tools;
 namespace taqc2018
 {
     [TestFixture]
+    //[Parallelizable(ParallelScope.All)]
     public class SmokeTest : TestRunner
     {
         // DataProvider
@@ -31,10 +32,12 @@ namespace taqc2018
             ListUtils.ToMultiArray(UserRepository.Get().FromExcel());
 
         //[Test, TestCaseSource(nameof(ValidUsers))]
-        [Test, TestCaseSource("ValidUsers")]
+        ////[Test, TestCaseSource("ValidUsers")]
         //[Test, TestCaseSource("ExternalValidUsers")]
         public void LoginTest9(IUser validRegistrator)
         {
+            //Console.WriteLine("ThreadID= " + Thread.CurrentThread.ManagedThreadId);
+            //
             // Steps
             RegistratorHomePage registratorHomePage = StartApplication()
                 .successRegistratorLogin(validRegistrator);
@@ -43,14 +46,52 @@ namespace taqc2018
             Assert.AreEqual(validRegistrator.GetLogin(), registratorHomePage.GetLoginNameText(),
                 "Assert Error. Invalid User Login.");
             //
+            //int k = 1;
+            //if (k > 0)
+            //{
+            //    throw new Exception("Will be Failed");
+            //}
+            //
             // Steps
             LoginPage loginPage = registratorHomePage.Logout();
             //
             // Check
             Assert.True(loginPage.GetLogoPictureSrcAttributeText()
                 .Contains(LoginPage.IMAGE_NAME), "Assert Error. LoginPage not Found.");
+            //    .Contains(LoginPage.IMAGE_NAME+"1"), "Assert Error. LoginPage not Found.");
             //
-            isTestSuccess = true;
+            //isTestSuccess = true;
+            //throw new Exception("Will be Failed");
         }
+
+        // DataProvider
+        private static readonly object[] LocalizationData =
+        {
+            new object[] { ChangeLanguageFields.ENGLISH },
+            new object[] { ChangeLanguageFields.RUSSIAN },
+            new object[] { ChangeLanguageFields.UKRAINIAN }
+        };
+
+        //[Test, TestCaseSource("LocalizationData")]
+        public void LocalizationTest1(ChangeLanguageFields languageFields)
+        {
+            //
+            // Steps
+            LoginPage loginPage = StartApplication()
+                    .ChangeLanguage(languageFields);
+            //
+            Thread.Sleep(2000);
+            //
+            // Check
+            Assert.AreEqual(LoginPageL10nRepository.LoginPageLanguages[LoginPageL10nFields.LOGIN_LABEL][languageFields],
+                loginPage.GetLoginLabelText(), "Assert Error. Invalid Localization LoginLabel.");
+            //
+            Assert.AreEqual(LoginPageL10nRepository.LoginPageLanguages[LoginPageL10nFields.PASSWORD_LABEL][languageFields],
+                loginPage.GetPasswordLabelText(), "Assert Error. Invalid Localization PasswordLabel.");
+            //
+            Assert.AreEqual(LoginPageL10nRepository.LoginPageLanguages[LoginPageL10nFields.SIGNIN_BUTTON][languageFields],
+                loginPage.GetSigninButtonText(), "Assert Error. Invalid Localization SigninButton.");
+        }
+
     }
 }

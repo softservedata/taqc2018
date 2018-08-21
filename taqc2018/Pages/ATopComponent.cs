@@ -13,6 +13,28 @@ using taqc2018.Tools.Find;
 
 namespace taqc2018.Pages
 {
+    public enum ChangeLanguageFields
+    {
+        UKRAINIAN,
+        RUSSIAN,
+        ENGLISH
+    }
+
+    public class ChangeLanguageRepository
+    {
+        public static Dictionary<ChangeLanguageFields, string> LanguageNames { get; private set; }
+
+        static ChangeLanguageRepository()
+        {
+            LanguageNames = new Dictionary<ChangeLanguageFields, string>()
+            {
+                { ChangeLanguageFields.UKRAINIAN, "українська" },
+                { ChangeLanguageFields.RUSSIAN, "русский" },
+                { ChangeLanguageFields.ENGLISH, "english" }
+            };
+        }
+    }
+
     public abstract class ATopComponent
     {
         public const string SRC_ATTRIBUTE = "src";
@@ -71,10 +93,10 @@ namespace taqc2018.Pages
             return GetChangeLanguageWebElement().Text;
         }
 
-        // TODO
-        public void SetChangeLanguage(string language)
+        //public void SetChangeLanguage(string language) // Invalid Solution
+        public void SetChangeLanguage(ChangeLanguageFields languageFields)
         {
-            ChangeLanguage.SelectByText(language);
+            ChangeLanguage.SelectByText(ChangeLanguageRepository.LanguageNames[languageFields]);
         }
 
         // Business Logic

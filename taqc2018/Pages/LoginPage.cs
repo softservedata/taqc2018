@@ -15,6 +15,63 @@ using taqc2018.Data.Users;
 
 namespace taqc2018.Pages
 {
+    public enum LoginPageL10nFields
+    {
+        LOGIN_LABEL,
+        PASSWORD_LABEL,
+        SIGNIN_BUTTON
+    }
+
+    public class LoginPageL10nRepository
+    {
+        public static Dictionary<LoginPageL10nFields, Dictionary<ChangeLanguageFields, string>> LoginPageLanguages { get; private set; }
+
+        static LoginPageL10nRepository()
+        {
+            LoginPageLanguages = new Dictionary<LoginPageL10nFields, Dictionary<ChangeLanguageFields, string>>();
+            initLoginLabel();
+            initPasswordLabel();
+            initSigninButton();
+        }
+
+        private static void initLoginLabel()
+        {
+            LoginPageLanguages.Add(LoginPageL10nFields.LOGIN_LABEL,
+                    new Dictionary<ChangeLanguageFields, string>()
+                    {
+                        { ChangeLanguageFields.UKRAINIAN, "Логін" },
+                        { ChangeLanguageFields.RUSSIAN, "Логин" },
+                        { ChangeLanguageFields.ENGLISH, "Login" }
+                    }
+                );
+        }
+
+        private static void initPasswordLabel()
+        {
+            LoginPageLanguages.Add(LoginPageL10nFields.PASSWORD_LABEL,
+                    new Dictionary<ChangeLanguageFields, string>()
+                    {
+                        { ChangeLanguageFields.UKRAINIAN, "Пароль" },
+                        { ChangeLanguageFields.RUSSIAN, "Пароль" },
+                        { ChangeLanguageFields.ENGLISH, "Password" }
+                    }
+                );
+        }
+
+        private static void initSigninButton()
+        {
+            LoginPageLanguages.Add(LoginPageL10nFields.SIGNIN_BUTTON,
+                    new Dictionary<ChangeLanguageFields, string>()
+                    {
+                        { ChangeLanguageFields.UKRAINIAN, "Увійти" },
+                        { ChangeLanguageFields.RUSSIAN, "Войти" },
+                        { ChangeLanguageFields.ENGLISH, "Sign in" }
+                    }
+                );
+        }
+
+    }
+
     public class LoginPage : ATopComponent
     {
         public const string IMAGE_NAME = "ukraine_logo2.gif";
@@ -91,7 +148,7 @@ namespace taqc2018.Pages
         // LoginLabel
         public string GetLoginLabelText()
         {
-            return LoginLabel.Text;
+            return LoginLabel.Text.Trim();
         }
 
         public void ClickLoginLabel()
@@ -133,7 +190,7 @@ namespace taqc2018.Pages
         // PasswordLabel
         public string GetPasswordLabelText()
         {
-            return PasswordLabel.Text;
+            return PasswordLabel.Text.Trim();
         }
 
         public void ClickPasswordLabel()
@@ -175,7 +232,7 @@ namespace taqc2018.Pages
         // SigninButton
         public string GetSigninButtonText()
         {
-            return SigninButton.Text;
+            return SigninButton.Text.Trim();
         }
 
         public void ClickSigninButton()
@@ -195,10 +252,10 @@ namespace taqc2018.Pages
         }
 
         // Business Logic
-        //public LoginPage changeLanguage(ChangeLanguageFields language)
-        public LoginPage ChangeLanguage(string language) // TODO
+        //public LoginPage ChangeLanguage(string language) // Invalid Solution
+        public LoginPage ChangeLanguage(ChangeLanguageFields languageFields)
         {
-            SetChangeLanguage(language);
+            SetChangeLanguage(languageFields);
             //return new LoginPage(driver);
             return new LoginPage();
         }

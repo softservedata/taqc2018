@@ -13,6 +13,7 @@ using taqc2018.Pages;
 using taqc2018.Data.Users;
 using taqc2018.Tools;
 using taqc2018.Data.Application;
+using NUnit.Framework.Interfaces;
 
 namespace taqc2018.Tools
 {
@@ -21,7 +22,7 @@ namespace taqc2018.Tools
     {
         protected readonly double DOUBLE_PRECISE = 0.01;
         //
-        protected bool isTestSuccess = false;
+        //protected bool isTestSuccess = false;
 
         [OneTimeSetUp]
         public void BeforeAllMethods()
@@ -40,13 +41,14 @@ namespace taqc2018.Tools
         public void SetUp()
         {
             //Application.Get().LoadLoginPage();
-            isTestSuccess = false;
+            //isTestSuccess = false;
         }
 
         [TearDown]
         public void TearDown()
         {
-            if (!isTestSuccess)
+            //if (!isTestSuccess)
+            if (TestContext.CurrentContext.Result.Outcome.Status.Equals(TestStatus.Failed))
             {
                 Application.Get().SaveCurrentState();
             }

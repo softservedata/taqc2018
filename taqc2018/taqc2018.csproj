@@ -96,6 +96,7 @@
     <Compile Include="Tools\ExcelReader.cs" />
     <Compile Include="Tools\Find\ASearch.cs" />
     <Compile Include="Tools\Find\ISearch.cs" />
+    <Compile Include="Tools\Find\ISearchStrategy.cs" />
     <Compile Include="Tools\Find\SearchElement.cs" />
     <Compile Include="Tools\Find\SearchExplicit.cs" />
     <Compile Include="Tools\Find\SearchImplicit.cs" />

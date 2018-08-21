@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using taqc2018.Data.Application;
 using taqc2018.Pages;
@@ -14,17 +15,37 @@ namespace taqc2018.Tools
         private volatile static Application instance;
         private static object lockingObject = new object();
         //private static Logger log = LogManager.GetCurrentClassLogger();
-
         // TODO Change for parallel work
         public ApplicationSource ApplicationSource { get; private set; }
         //public FlexAssert FlexAssert { get; private set; }
-        public BrowserWrapper Browser { get; private set; }
-        private ISearch search;
-        public ISearch Search
+        //
+        //public BrowserWrapper Browser { get; private set; }
+        // Parallel work
+        private Dictionary<int, BrowserWrapper> browser;
+        public BrowserWrapper Browser
+        {
+            get
+            {
+                int currentThread = Thread.CurrentThread.ManagedThreadId;
+                //if (browser[currentThread] == null)
+                //browser.TryGetValue(key, out value);
+                if (!browser.ContainsKey(currentThread))
+                {
+                    InitBrowser(currentThread);
+                }
+                return browser[currentThread];
+            }
+        }
+        //
+        //private ISearch search;
+        private ISearchStrategy search;
+        //public ISearch Search
+        public ISearchStrategy Search
         {
             get
             { if (search == null)
-                { InitSearch();
+                {
+                    InitSearch();
                 }
                 return search;
             }
@@ -37,6 +58,7 @@ namespace taqc2018.Tools
 
         private Application(ApplicationSource applicationSource)
         {
+            browser = new Dictionary<int, BrowserWrapper>();
             this.ApplicationSource = applicationSource;
         }
 
@@ -59,7 +81,7 @@ namespace taqc2018.Tools
                         }
                         instance = new Application(applicationSource);
                         //
-                        instance.InitBrowser(applicationSource);
+                        //instance.InitBrowser(applicationSource);
                         //instance.InitSearch();
                     }
                 }
@@ -71,16 +93,24 @@ namespace taqc2018.Tools
         {
             if (instance != null)
             {
-                // TODO Change for parallel work
-                instance.Browser.Quit();
+                foreach (KeyValuePair<int, BrowserWrapper> kvp in instance.browser)
+                {
+                    kvp.Value.Quit();
+                }
+                //
+                // Change for parallel work
+                // instance.Browser.Quit();
+                //
                 // Close DBConnection, etc.
                 instance = null;
             }
         }
 
-        private void InitBrowser(ApplicationSource applicationSource)
+        //private void InitBrowser(ApplicationSource applicationSource)
+        private void InitBrowser(int currentThread)
         {
-            this.Browser = new BrowserWrapper(applicationSource);
+            //this.Browser = new BrowserWrapper(applicationSource);
+            browser.Add(currentThread, new BrowserWrapper(ApplicationSource));
         }
 
         private void InitSearch()

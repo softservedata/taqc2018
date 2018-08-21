@@ -13,7 +13,14 @@ namespace taqc2018.Tools.Find
 {
     public abstract class ASearch : ISearch
     {
+        public const long WITHOUT_MILLISECONDS = 10000000;
+        public const int TIME_SLEEP_MILLISECONDS = 500;
         private const string NO_SUCH_ELEMENT = "Unable to locate element(s):";
+
+        protected long GetSecondStamp()
+        {
+            return DateTime.Now.ToFileTime() / WITHOUT_MILLISECONDS;
+        }
 
         // Abstract Methods
 

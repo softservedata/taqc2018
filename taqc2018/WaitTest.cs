@@ -11,6 +11,9 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using taqc2018.Data.Application;
+using taqc2018.Tools;
+using taqc2018.Tools.Find;
 //#pragma warning disable
 
 namespace taqc2018
@@ -173,6 +176,84 @@ namespace taqc2018
             Thread.Sleep(2000);
             driver.Quit();
         }
+
+        //[Test]
+        public void ExpectedConditions2()
+        {
+            ////IWebDriver driver = new ChromeDriver();
+            //IWebDriver driver = new FirefoxDriver();
+            //
+            ////driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            ////driver.Navigate().GoToUrl("https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/paging/");
+            ////driver.Manage().Window.Maximize();
+            //
+            ApplicationSource applicationSource = new ApplicationSource(
+                ApplicationSourceRepository.CHROME_TEMPORARY_MAXIMIZED_WHITH_UI,
+                10L, 10L, "", "");
+            Application.Get(applicationSource);
+            Application.Get().Browser.OpenUrl("https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/paging/");
+            ISearchStrategy search = Application.Get().Search;
+            //search.SetExplicitStrategy();
+            //
+            //
+            // Goto Position By JavaScript.
+            ////IJavaScriptExecutor javaScript = (IJavaScriptExecutor)driver;
+            ////IWebElement position = driver.FindElement(By.CssSelector("#using-paging-with-other-data-processing-plugins"));
+            ////javaScript.ExecuteScript("arguments[0].scrollIntoView(true);", position);
+            //
+            // TODO Add to class BrowserWrapper
+            IJavaScriptExecutor javaScript = (IJavaScriptExecutor)Application.Get().Browser.Driver;
+            IWebElement position = search.CssSelector("#using-paging-with-other-data-processing-plugins");
+            javaScript.ExecuteScript("arguments[0].scrollIntoView(true);", position);
+            //
+            Thread.Sleep(2000);
+            //
+            //
+            //driver.SwitchTo().Frame(driver.FindElement(By.XPath("//iframe[contains(@style,'height: 426px')]")));
+            //
+            // TODO Add to class BrowserWrapper
+            Application.Get().Browser.Driver.SwitchTo()
+                .Frame(search.XPath("//iframe[contains(@style,'height: 426px')]"));
+            //
+            //
+            ////IWebElement tdNevadaFirst = driver.FindElement(By.XPath("//td[text()='Nevada']"));
+            ////IWebElement tdNevadaFirstData = driver.FindElement(By.XPath("//td[text()='Nevada']/preceding-sibling::td[2]"));
+            ////Console.WriteLine("tdNevadaFirstData1= " + tdNevadaFirstData.Text);
+            //
+            IWebElement tdNevadaFirstData = search.XPath("//td[text()='Nevada']/preceding-sibling::td[2]");
+            Console.WriteLine("tdNevadaFirstData1= " + tdNevadaFirstData.Text);
+            //
+            //
+            //driver.FindElement(By.XPath("//span[text()='2']")).Click();
+            //
+            search.XPath("//span[text()='2']").Click();
+            //
+            //
+            ////driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            ////WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            ////wait.Until(InvisibilityOfElementLocated(By.XPath("//td[text()='" + tdNevadaFirstData.Text + "']")));
+            ////driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            //
+            search.SetExplicitStrategy();
+            Console.WriteLine("tdNevadaFirstData2= " + search.InvisibilityOfWebElementLocated(By.XPath("//td[text()='" + tdNevadaFirstData.Text + "']")));
+            search.SetImplicitStrategy();
+            //
+            //
+            ////Thread.Sleep(4000); // For Presentation
+            //
+            ////tdNevadaFirstData = driver.FindElement(By.XPath("//td[text()='Nevada']/preceding-sibling::td[2]"));
+            ////Console.WriteLine("tdNevadaFirstData2= " + tdNevadaFirstData.Text);
+            //
+            tdNevadaFirstData = search.XPath("//td[text()='Nevada']/preceding-sibling::td[2]");
+            Console.WriteLine("tdNevadaFirstData2= " + tdNevadaFirstData.Text);
+            //
+            //
+            Thread.Sleep(2000);
+            //driver.Quit();
+            //
+            Application.Remove();
+        }
+
 
         public static Func<IWebDriver, bool> StalenessOf(IWebElement element)
         {
