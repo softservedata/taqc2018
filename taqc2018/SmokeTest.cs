@@ -37,6 +37,7 @@ namespace taqc2018
         public void LoginTest9(IUser validRegistrator)
         {
             //Console.WriteLine("ThreadID= " + Thread.CurrentThread.ManagedThreadId);
+            log.Info("Test Start: ThreadID= " + Thread.CurrentThread.ManagedThreadId);
             //
             // Steps
             RegistratorHomePage registratorHomePage = StartApplication()
@@ -62,6 +63,7 @@ namespace taqc2018
             //
             //isTestSuccess = true;
             //throw new Exception("Will be Failed");
+            log.Info("Test Done: ThreadID= " + Thread.CurrentThread.ManagedThreadId);
         }
 
         // DataProvider

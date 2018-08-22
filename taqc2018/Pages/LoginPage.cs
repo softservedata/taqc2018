@@ -11,6 +11,7 @@ using OpenQA.Selenium.Support.UI;
 using taqc2018.UIMapping;
 using OpenQA.Selenium.Support.PageObjects;
 using taqc2018.Data.Users;
+using NLog;
 //#pragma warning disable
 
 namespace taqc2018.Pages
@@ -74,6 +75,8 @@ namespace taqc2018.Pages
 
     public class LoginPage : ATopComponent
     {
+        public Logger log = LogManager.GetCurrentClassLogger(); // for NLog
+        //
         public const string IMAGE_NAME = "ukraine_logo2.gif";
         //
         //private const string LOGIN_LABEL_XPATH = "//label[contains(@for,'inputEmail')]";
@@ -263,11 +266,15 @@ namespace taqc2018.Pages
         private void SetLoginData(IUser user)
         //private void SetLoginData(string login, string password)
         {
+            log.Debug("SetLoginData() Start, user.Login= " + user.GetLogin());
             SetLoginInputClear(user.GetLogin());
+            log.Trace("SetLoginData(), Point 1, user.Login= " + user.GetLogin());
             //SetLoginInputClear(login);
             SetPasswordInputClear(user.GetPassword());
+            log.Trace("SetLoginData(), Point 2, user.Login= " + user.GetLogin());
             //SetPasswordInputClear(password);
             ClickSigninButton();
+            log.Debug("SetLoginData() Done, user.Login= " + user.GetLogin());
         }
 
         public RepeatLoginPage unsuccessfulLogin(IUser invalidUser)

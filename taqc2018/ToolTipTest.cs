@@ -57,5 +57,26 @@ namespace taqc2018
             driver.Quit();
         }
 
+        //[Test]
+        public void CheckToolTip()
+        {
+
+            IWebDriver driver = new ChromeDriver();
+            //
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Navigate().GoToUrl("file:///D:/tooltip.html");
+            //
+            IWebElement element = driver.FindElement(By.Id("info-google"));
+            //
+            Actions action = new Actions(driver);
+            action.ClickAndHold().MoveToElement(element).Build().Perform();
+            //action.MoveToElement(blogsElement).Build().Perform();
+            Thread.Sleep(4000);
+            //
+            Console.WriteLine("ToolTip= " + element.Text + " =end");
+            //
+            driver.Quit();
+        }
+
     }
 }
