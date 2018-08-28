@@ -73,7 +73,10 @@ namespace taqc2018
             //action.MoveToElement(blogsElement).Build().Perform();
             Thread.Sleep(4000);
             //
-            Console.WriteLine("ToolTip= " + element.Text + " =end");
+            Console.WriteLine("Text= " + element.Text + " =end");
+            Console.WriteLine("ToolTip= " + element.GetAttribute("title") + " =end");
+            //
+            Assert.AreEqual("info-google", element.GetAttribute("title"));
             //
             driver.Quit();
         }
